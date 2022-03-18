@@ -1,4 +1,5 @@
 const lib = require("../lib");
+const exercise = require("../exercise1");
 
 describe("absolute", () => {
   it("should return a positive number if input is positive", () => {
@@ -55,5 +56,36 @@ describe("registerUser", () => {
     const result = lib.registerUser("nathan");
     expect(result).toMatchObject({ username: "nathan" });
     expect(result.id).toBeGreaterThan(0);
+  });
+});
+
+describe("fizzBuzz", () => {
+  it("Should throw an error if the input is NaN", () => {
+    expect(() => {
+      exercise.fizzBuzz("15").toThrow();
+      exercise.fizzBuzz(null).toThrow();
+      exercise.fizzBuzz(undefined).toThrow();
+      exercise.fizzBuzz({}).toThrow();
+    });
+  });
+
+  it("Should return FizzBuzz if the number is divisible by both 3 and 5", () => {
+    const result = exercise.fizzBuzz(15);
+    expect(result).toBe("FizzBuzz");
+  });
+
+  it("Should return Fizz if the number is only divisible by 3", () => {
+    const result = exercise.fizzBuzz(3);
+    expect(result).toBe("Fizz");
+  });
+
+  it("Should return Buzz if the number is only divisible 5", () => {
+    const result = exercise.fizzBuzz(25);
+    expect(result).toBe("Buzz");
+  });
+
+  it("Should return the input if the number is neither divisible 3 or 5", () => {
+    const result = exercise.fizzBuzz(22);
+    expect(result).toBe(22);
   });
 });
