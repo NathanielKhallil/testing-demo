@@ -1,5 +1,7 @@
 const lib = require("../lib");
 const exercise = require("../exercise1");
+const db = require("../db");
+const mail = require("../mail");
 
 describe("absolute", () => {
   it("should return a positive number if input is positive", () => {
@@ -87,5 +89,42 @@ describe("fizzBuzz", () => {
   it("Should return the input if the number is neither divisible 3 or 5", () => {
     const result = exercise.fizzBuzz(22);
     expect(result).toBe(22);
+  });
+});
+
+describe("discount", () => {
+  it("should apply 10% discount if the customer has 10+ points", () => {
+    db.getCustomerSync = function (customerId) {
+      console.log("Fake reading customer...");
+      return { id: customerId, points: 20 };
+    };
+    const order = { customerId: 1, totalPrice: 10 };
+    lib.applyDiscount(order);
+    expect(order.totalPrice).toBe(9);
+  });
+});
+
+describe("notifyCustomer", () => {
+  it("Should notify the customer by email when they place their order.", () => {
+    // const mockFunction = jest.fn();
+    // mockFunction.mockReturnValue(1)
+    // mockFunction.mockResolvedValue(1)
+    // mockFunction.mockRejectedValue(new Error('....'))
+    // const result = await mockFunction();
+    db.getCustomerSync = jest.fn().mockReturnValue({ email: "a" });
+    // db.getCustomerSync = function (customerId) {
+    //   return { email: "a" };
+    // };
+    mail.send = jest.fn();
+    // let mailSent = false;
+    // mail.send = function (email, message) {
+    //   mailSent = true;
+    // };
+
+    lib.notifyCustomer({ customerId: 1 });
+
+    expect(mail.send).toHaveBeenCalled();
+    expect(mail.send.mock.calls[0][0]).toBe("a");
+    w;
   });
 });
